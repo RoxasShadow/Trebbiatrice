@@ -18,8 +18,19 @@ module Trebbiatrice
       @harvest.time.trackable_projects
     end
 
-    def new_entry!(entry)
-      @harvest.time.create(entry)
+    def new_entry!(entry_data, find = true)
+      if find
+        entry = @harvest.time.all.select { |entry| entry[:project_id].to_s == entry_data[:project_id].to_s }.last
+
+        if entry
+          toggle!(entry[:id])
+          entry
+        else
+          new_entry!(entry_data, false)
+        end
+      else
+        @harvest.time.create(entry_data)
+      end
     end
 
     def toggle!(entry_id)
