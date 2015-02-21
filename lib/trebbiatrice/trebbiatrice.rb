@@ -19,14 +19,13 @@ module Trebbiatrice
         end.last
 
         if response[:status] == 'failure' || !trebbia.working_on
-          if trebbia.tracking?
-            puts "stopping #{trebbia.project[:name]}" if trebbia.project
-            trebbia.stop_tracking!
-          end
+          stop_tracking!(trebbia)
 
           last_project = nil
         else
           if trebbia.working_on && (last_project != trebbia.working_on || !trebbia.project)
+            stop_tracking!(trebbia)
+
             trebbia.project = trebbia.active_projects.last
             trebbia.track! task
 
@@ -36,6 +35,15 @@ module Trebbiatrice
         end
 
         sleep frequency
+      end
+    end
+
+  private
+
+    def stop_tracking!(trebbia)
+      if trebbia.tracking?
+        puts "stopping #{trebbia.project[:name]}" if trebbia.project
+        trebbia.stop_tracking!
       end
     end
   end

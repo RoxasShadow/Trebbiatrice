@@ -33,12 +33,8 @@ module Trebbiatrice
     def track!(task = 'Development', notes = '')
       return if tracking?
 
-      if @entry
-        @harvest.toggle!(@entry[:id])
-      else
-        task_id = get_task(task)[:id]
-        @entry  = @harvest.new_entry! notes: notes, hours: 0, spent_at: today, project_id: @project[:id], task_id: task_id
-      end
+      task_id = get_task(task)[:id]
+      @entry  = @harvest.new_entry! notes: notes, hours: 0, spent_at: today, project_id: @project[:id], task_id: task_id
 
       @tracking = true
     end
@@ -47,6 +43,7 @@ module Trebbiatrice
       if @entry && tracking?
         @tracking = false
         @harvest.toggle!(@entry[:id])
+        @entry = nil
       end
     end
 
