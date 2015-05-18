@@ -1,14 +1,20 @@
+#--
+#            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#                    Version 2, December 2004
+#
+#            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+#
+#  0. You just DO WHAT THE FUCK YOU WANT TO.
+#++
+
 module Trebbiatrice
   class << self
     def run!(login_data, task, testata, frequency)
       trebbia = Trebbia.new(login_data)
-      last_project, project = nil
+      last_project, project = nil, nil
 
-      trap('INT') do
-        puts 'Stopping gracefully the trebbiatrice...'
-        trebbia.stop_tracking! if trebbia.tracking?
-        exit
-      end
+      listen_to_int!(trebbia)
 
       loop do
         response = Trebbia.invoke!(testata[:engine], testata[:name])
@@ -34,7 +40,7 @@ module Trebbiatrice
           end
         end
 
-        sleep frequency
+        sleep(frequency)
       end
     end
 
@@ -44,6 +50,14 @@ module Trebbiatrice
       if trebbia.tracking?
         puts "stopping #{trebbia.project[:name]}" if trebbia.project
         trebbia.stop_tracking!
+      end
+    end
+
+    def listen_to_int!(trebbia)
+      trap('INT') do
+        puts 'Stopping gracefully the trebbiatrice...'
+        trebbia.stop_tracking! if trebbia.tracking?
+        exit
       end
     end
   end

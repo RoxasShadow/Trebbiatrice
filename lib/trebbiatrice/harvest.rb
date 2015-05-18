@@ -20,7 +20,8 @@ module Trebbiatrice
 
     def new_entry!(entry_data, find = true)
       if find
-        entry = @harvest.time.all.select { |entry| entry[:project_id].to_s == entry_data[:project_id].to_s }.last
+        project_id = entry_data[:project_id].to_s
+        entry = @harvest.time.all.select { |entry| entry[:project_id].to_s == project_id }.last
 
         if entry
           toggle!(entry[:id])
