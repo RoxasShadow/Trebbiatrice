@@ -18,6 +18,7 @@ Installation
 export TREBBIA_PASS='password'
 export TREBBIA_DOMAIN='subdomain'
 export TREBBIA_MAIL='email'
+export TREBBIA_FREQ=3 # optional, default is 10
 ```
 
 `$ trebbiatrice [trebbia]`
