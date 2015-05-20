@@ -25,7 +25,7 @@ login_data = {
 }
 
 task      = 'Development'
-frequency = ENV.fetch('TREBBIA_FREQ') { 1 }.to_i
+frequency = ENV.fetch('TREBBIA_FREQ') { 10 }.to_i
 testata   = { engine: 'osascript', name: trebbia }
 
 Trebbiatrice.run! login_data, task, testata, frequency
